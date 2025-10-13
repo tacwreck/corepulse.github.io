@@ -1,0 +1,242 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #f4f4f4;
+  background: #0a0b10;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* === Animated Gradient Background === */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #1a1b26, #12131a, #24263a, #181920);
+  background-size: 400% 400%;
+  z-index: -1;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === Navbar === */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  position: sticky;
+  top: 0;
+  background: rgba(20, 20, 25, 0.6);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 10;
+}
+
+.logo {
+  position: relative;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(88, 101, 242, 0.8);
+}
+
+.logo-glow {
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #5865f2;
+  filter: blur(8px);
+  transform: translateY(-50%);
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0.6;
+    filter: blur(8px);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.4);
+    opacity: 1;
+    filter: blur(12px);
+  }
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.3s;
+}
+
+.nav-links a:hover {
+  color: #fff;
+  text-shadow: 0 0 10px #5865f2;
+}
+
+/* === Hero === */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 25px rgba(88, 101, 242, 0.6);
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  color: #c8c8c8;
+  font-size: 1.1rem;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.9rem 1.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.btn.primary {
+  background: linear-gradient(90deg, #5865f2, #7289da);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(88, 101, 242, 0.6);
+}
+
+.btn.primary:hover {
+  background: linear-gradient(90deg, #4752c4, #5865f2);
+  box-shadow: 0 0 25px rgba(88, 101, 242, 0.9);
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 1px solid #888;
+  color: #ccc;
+}
+
+.btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* === Features === */
+.features {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s ease;
+  box-shadow: 0 0 10px rgba(88, 101, 242, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 25px rgba(88, 101, 242, 0.3);
+}
+
+/* === Installation === */
+.install {
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  text-align: center;
+}
+
+.install pre {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1rem;
+  border-radius: 8px;
+  display: inline-block;
+  color: #00e0a1;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+/* === About === */
+.about {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.about p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: #cfcfcf;
+}
+
+/* === Footer === */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(20, 20, 25, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer .socials a {
+  color: #aaa;
+  margin: 0 0.5rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer .socials a:hover {
+  color: #fff;
+}
