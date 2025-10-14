@@ -1,242 +1,97 @@
+/* CorePulse styles — blue/purple glow theme inspired by sidestore.io + wisehosting.com */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap");
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root{
+  --bg:#07070a;
+  --glass: rgba(255,255,255,0.06);
+  --muted:#c8c8d2;
+  --accent1:#5865f2;
+  --accent2:#8b5cf6;
 }
 
-body {
-  font-family: "Inter", sans-serif;
-  color: #f4f4f4;
-  background: #0a0b10;
-  overflow-x: hidden;
-  position: relative;
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background:var(--bg);
+  color:#eef0f6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
 }
 
-/* === Animated Gradient Background === */
-.background-animation {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(-45deg, #1a1b26, #12131a, #24263a, #181920);
-  background-size: 400% 400%;
-  z-index: -1;
-  animation: gradientShift 15s ease infinite;
+/* animated gradient background */
+.background-animation{
+  position:fixed;inset:0;z-index:-2;
+  background:linear-gradient(120deg,#0f1016 0%, #12131a 30%, #1b1530 60%, #0b0c10 100%);
+  background-size:400% 400%;
+  animation: gradientShift 18s ease infinite;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* subtle vignette */
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(1200px 600px at 10% 10%, rgba(88,101,242,0.06), transparent 10%),
+             radial-gradient(900px 400px at 90% 90%, rgba(139,92,246,0.04), transparent 10%);
+  pointer-events:none;
 }
 
-/* === Navbar === */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 2rem;
-  position: sticky;
-  top: 0;
-  background: rgba(20, 20, 25, 0.6);
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 10;
-}
+/* Nav */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;position:sticky;top:0;background:rgba(6,6,10,0.35);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.03);z-index:40}
+.logo{position:relative;font-weight:800;color:#fff;font-size:1.25rem;padding-left:18px}
+.logo-glow{position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--accent1);filter:blur(8px);animation:pulseGlow 2.8s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{transform:translateY(-50%) scale(.85);opacity:.6}50%{transform:translateY(-50%) scale(1.4);opacity:1;filter:blur(14px)}}
+.nav-links{display:flex;gap:1.2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;padding:.25rem .3rem;transition:all .2s}
+.nav-links a:hover{color:#fff;text-shadow:0 0 10px rgba(88,101,242,.35)}
 
-.logo {
-  position: relative;
-  font-weight: 800;
-  font-size: 1.4rem;
-  color: #ffffff;
-  text-shadow: 0 0 15px rgba(88, 101, 242, 0.8);
-}
+/* hero */
+.hero{min-height:72vh;display:flex;align-items:center;justify-content:center;padding:4rem 1.25rem;text-align:center}
+.hero-content{max-width:920px}
+.hero h1{font-size:2.6rem;line-height:1.02;margin-bottom:.6rem;text-shadow:0 6px 30px rgba(88,101,242,0.14)}
+.hero p{color:var(--muted);margin-bottom:1.2rem;font-size:1.05rem}
+.hero-buttons{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.btn{display:inline-block;padding:.85rem 1.4rem;border-radius:10px;font-weight:700;text-decoration:none;transition:all .22s}
+.btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;box-shadow:0 8px 30px rgba(88,101,242,0.12)}
+.btn.primary:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(88,101,242,0.18)}
+.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
 
-.logo-glow {
-  position: absolute;
-  top: 50%;
-  left: -12px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #5865f2;
-  filter: blur(8px);
-  transform: translateY(-50%);
-  animation: pulseGlow 2.5s ease-in-out infinite;
-}
+/* badges */
+.hero-badges{display:flex;gap:.6rem;justify-content:center;margin-top:1rem}
+.badge{background:rgba(255,255,255,0.03);padding:.35rem .6rem;border-radius:999px;font-weight:700;color:var(--muted);font-size:.85rem}
 
-@keyframes pulseGlow {
-  0%, 100% {
-    transform: translateY(-50%) scale(0.8);
-    opacity: 0.6;
-    filter: blur(8px);
-  }
-  50% {
-    transform: translateY(-50%) scale(1.4);
-    opacity: 1;
-    filter: blur(12px);
-  }
-}
+/* sections */
+.features{padding:3.2rem 1.2rem 1.2rem}
+.features h2{text-align:center;font-size:1.75rem;margin-bottom:1.4rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;max-width:1100px;margin:0 auto}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:1.5rem;border-radius:12px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 30px rgba(11,12,15,0.6);transition:transform .22s,box-shadow .22s}
+.card h3{margin-bottom:.6rem}
+.card p{color:var(--muted);font-size:.95rem}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 50px rgba(13,14,20,0.7)}
 
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
-}
+/* install */
+.install{padding:2.4rem 1.2rem;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border-top:1px solid rgba(255,255,255,0.02)}
+.install-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;max-width:1100px;margin:0 auto}
+.install-block{background:var(--glass);padding:1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
+.install pre{background:rgba(0,0,0,0.45);padding:.8rem;border-radius:8px;color:#8affd1;overflow:auto}
 
-.nav-links a {
-  color: #ccc;
-  text-decoration: none;
-  transition: color 0.2s, text-shadow 0.3s;
-}
+/* about */
+.about{padding:2.4rem 1.2rem;text-align:center}
+.about p{max-width:840px;margin:0 auto;color:var(--muted)}
 
-.nav-links a:hover {
-  color: #fff;
-  text-shadow: 0 0 10px #5865f2;
-}
+/* footer */
+.footer{padding:1.2rem;border-top:1px solid rgba(255,255,255,0.03);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;background:rgba(0,0,0,0.06)}
+.socials a{color:var(--muted);text-decoration:none;margin-left:.8rem;font-weight:600}
 
-/* === Hero === */
-.hero {
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem;
-}
-
-.hero h1 {
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 25px rgba(88, 101, 242, 0.6);
-}
-
-.hero p {
-  max-width: 600px;
-  margin: 0 auto 1.5rem;
-  color: #c8c8c8;
-  font-size: 1.1rem;
-}
-
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.btn {
-  padding: 0.9rem 1.6rem;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.3s ease;
-}
-
-.btn.primary {
-  background: linear-gradient(90deg, #5865f2, #7289da);
-  color: #fff;
-  box-shadow: 0 0 10px rgba(88, 101, 242, 0.6);
-}
-
-.btn.primary:hover {
-  background: linear-gradient(90deg, #4752c4, #5865f2);
-  box-shadow: 0 0 25px rgba(88, 101, 242, 0.9);
-}
-
-.btn.secondary {
-  background: transparent;
-  border: 1px solid #888;
-  color: #ccc;
-}
-
-.btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* === Features === */
-.features {
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-.features h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 1.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: 0.3s ease;
-  box-shadow: 0 0 10px rgba(88, 101, 242, 0.1);
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 25px rgba(88, 101, 242, 0.3);
-}
-
-/* === Installation === */
-.install {
-  padding: 4rem 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  text-align: center;
-}
-
-.install pre {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 1rem;
-  border-radius: 8px;
-  display: inline-block;
-  color: #00e0a1;
-  font-size: 0.9rem;
-  margin: 1rem 0;
-  text-align: left;
-}
-
-/* === About === */
-.about {
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-.about p {
-  max-width: 700px;
-  margin: 0 auto;
-  color: #cfcfcf;
-}
-
-/* === Footer === */
-.footer {
-  text-align: center;
-  padding: 2rem;
-  background: rgba(20, 20, 25, 0.4);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer .socials a {
-  color: #aaa;
-  margin: 0 0.5rem;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer .socials a:hover {
-  color: #fff;
+/* responsiveness */
+@media (max-width:760px){
+  .hero h1{font-size:1.8rem}
+  .nav-links{display:none}
+  .logo{font-size:1.05rem}
+  .hero{padding:2.2rem 1rem}
 }
