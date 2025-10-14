@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>CorePulse Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Inter,system-ui;display:flex;align-items:center;justify-content:center;height:100vh;background:#090912;color:#eaeef8;flex-direction:column}
+    .panel{background:rgba(255,255,255,0.02);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);width:520px;text-align:left}
+    pre{background:#05050a;padding:12px;border-radius:8px;color:#7fffd6;overflow:auto}
+    button{padding:8px 12px;border-radius:8px;border:none;background:#5865f2;color:white;font-weight:700;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h2>CorePulse Demo</h2>
+    <p>Open your browser console to see metric logs. You can also send data to a test endpoint.</p>
+    <pre id="logs">Logs will appear here (console is primary).</pre>
+    <div style="margin-top:12px"><button id="start">Start</button> <button id="stop">Stop</button></div>
+  </div>
+
+  <script src="corepulse.js"></script>
+  <script>
+    const logs = document.getElementById("logs");
+    CorePulse.init({ interval: 1500, track: ["fps","memory","network"] });
+    CorePulse.onData = (d) => {
+      const text = JSON.stringify(d, null, 2);
+      console.log("CorePulse data:", d);
+      logs.textContent = text;
+    };
+    document.getElementById("start").addEventListener("click", ()=> CorePulse.start());
+    document.getElementById("stop").addEventListener("click", ()=> CorePulse.stop());
+  </script>
+</body>
+</html>
