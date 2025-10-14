@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>CorePulse Docs</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* small docs overrides */
+    body{padding:2rem}
+    .doc-wrap{max-width:900px;margin:0 auto;background:rgba(255,255,255,0.02);padding:2rem;border-radius:12px}
+    h1{font-size:1.6rem}
+    pre{background:#03030a;padding:12px;border-radius:8px;color:#8affd1;overflow:auto}
+    a{color:var(--accent2)}
+  </style>
+</head>
+<body>
+  <div class="doc-wrap">
+    <a href="../index.html">← Back to CorePulse</a>
+    <h1>CorePulse — Documentation</h1>
+
+    <h2>Quick Install</h2>
+    <p>Install from npm (for bundlers):</p>
+    <pre><code>npm install corepulse</code></pre>
+    <p>Or simply copy <code>corepulse.js</code> to your project and include it via a &lt;script&gt; tag.</p>
+
+    <h2>Basic Usage</h2>
+    <p>After including the SDK, initialize and start collecting metrics:</p>
+    <pre><code>CorePulse.init({ interval: 2000, track: ['fps','memory'] });
+CorePulse.start();</code></pre>
+
+    <h2>Receiving Data</h2>
+    <p>By default the SDK logs to browser console. To handle metrics yourself, assign <code>CorePulse.onData</code>:</p>
+    <pre><code>CorePulse.onData = function(stats){
+  // stats contains fps, memory, network
+  console.log('received', stats);
+};</code></pre>
+
+    <h2>Send to Server</h2>
+    <p>Use <code>CorePulse.sendTo(url)</code> to POST collected data to your endpoint:</p>
+    <pre><code>CorePulse.sendTo('https://your-server.example.com/metrics');</code></pre>
+
+    <h2>Advanced Ideas</h2>
+    <ul>
+      <li>Create a lightweight WebSocket server to stream live metrics to a dashboard.</li>
+      <li>Persist metric snapshots to IndexedDB or a log file for later analysis.</li>
+      <li>Wrap CorePulse into an Electron app for desktop monitoring.</li>
+    </ul>
+
+    <h2>Contributing</h2>
+    <p>If you'd like to add features or fix bugs, fork the repo, make changes and open a pull request. Add tests under <code>tests/</code> and update docs.</p>
+
+    <h2>License</h2>
+    <p>CorePulse is MIT-licensed — see LICENSE in the repo.</p>
+  </div>
+</body>
+</html>
