@@ -1,35 +1,57 @@
+<!-- demo.html -->
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>CorePulse Demo</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CorePulse — Demo</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body{font-family:Inter,system-ui;display:flex;align-items:center;justify-content:center;height:100vh;background:#090912;color:#eaeef8;flex-direction:column}
-    .panel{background:rgba(255,255,255,0.02);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);width:520px;text-align:left}
-    pre{background:#05050a;padding:12px;border-radius:8px;color:#7fffd6;overflow:auto}
-    button{padding:8px 12px;border-radius:8px;border:none;background:#5865f2;color:white;font-weight:700;cursor:pointer}
+    /* small demo-only styles override */
+    body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080812;color:#eaf0ff;font-family:Inter,system-ui;padding:20px}
+    .demo-card{width:100%;max-width:760px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+    .controls{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    button{background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:white;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+    pre{background:#02020a;padding:12px;border-radius:8px;color:#8affd1;overflow:auto;max-height:300px}
   </style>
 </head>
 <body>
-  <div class="panel">
+  <div class="demo-card">
     <h2>CorePulse Demo</h2>
-    <p>Open your browser console to see metric logs. You can also send data to a test endpoint.</p>
-    <pre id="logs">Logs will appear here (console is primary).</pre>
-    <div style="margin-top:12px"><button id="start">Start</button> <button id="stop">Stop</button></div>
+    <p class="muted">Open your <strong>browser console</strong> to see the default logs. This page also shows the latest snapshot below.</p>
+
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="stopBtn">Stop</button>
+      <button id="sendBtn">Send to demo endpoint</button>
+    </div>
+
+    <h3 style="margin-top:16px">Latest snapshot</h3>
+    <pre id="log">Not started</pre>
   </div>
 
   <script src="corepulse.js"></script>
   <script>
-    const logs = document.getElementById("logs");
-    CorePulse.init({ interval: 1500, track: ["fps","memory","network"] });
+    const logEl = document.getElementById("log");
+    CorePulse.init({ interval: 1500 });
     CorePulse.onData = (d) => {
-      const text = JSON.stringify(d, null, 2);
-      console.log("CorePulse data:", d);
-      logs.textContent = text;
+      logEl.textContent = JSON.stringify(d, null, 2);
+      console.log("CorePulse demo", d);
     };
-    document.getElementById("start").addEventListener("click", ()=> CorePulse.start());
-    document.getElementById("stop").addEventListener("click", ()=> CorePulse.stop());
+
+    document.getElementById("startBtn").addEventListener("click", ()=> {
+      CorePulse.start();
+      console.log("CorePulse started");
+    });
+    document.getElementById("stopBtn").addEventListener("click", ()=> {
+      CorePulse.stop();
+      console.log("CorePulse stopped");
+    });
+    document.getElementById("sendBtn").addEventListener("click", ()=> {
+      // demo endpoint — doesn't actually accept in a static site; this shows usage
+      CorePulse.sendTo("https://example.com/corepulse-demo-endpoint");
+      alert("sendTo configured to https://example.com/corepulse-demo-endpoint (demo)");
+    });
   </script>
 </body>
 </html>
