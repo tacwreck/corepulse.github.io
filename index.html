@@ -1,89 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CorePulse – Developer Power Simplified</title>
-    <link rel="stylesheet" href="style.css" />
-    <script defer src="script.js"></script>
-  </head>
-  <body>
-    <div class="background-animation"></div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CorePulse — Your app's heartbeat, visualized</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="background-animation"></div>
 
-    <nav class="navbar">
-      <div class="logo">
-        <span class="logo-glow"></span>
-        ⚡ CorePulse
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-glow" aria-hidden="true"></span>
+      ⚡ CorePulse
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/corepulse-dev" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="home" role="banner">
+    <div class="hero-content">
+      <h1>Supercharge your development workflow</h1>
+      <p>CorePulse is a tiny, open-source performance toolkit that tracks FPS, CPU, memory, and network usage — then visualizes it in a dashboard or logs locally.</p>
+      <div class="hero-buttons">
+        <a class="btn primary" href="#install">Get Started</a>
+        <a class="btn secondary" href="demo.html" target="_blank" rel="noopener">Live Demo</a>
       </div>
-      <ul class="nav-links">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#install">Install</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="https://github.com/corepulse-dev" target="_blank">GitHub</a></li>
-      </ul>
-    </nav>
-
-    <section class="hero">
-      <div class="hero-content">
-        <h1>Supercharge Your Development Workflow</h1>
-        <p>
-          CorePulse is an open-source developer toolkit that integrates powerful monitoring,
-          optimization, and automation directly into your project.
-        </p>
-        <div class="hero-buttons">
-          <a href="#install" class="btn primary">Get Started</a>
-          <a href="https://github.com/corepulse-dev" target="_blank" class="btn secondary">View on GitHub</a>
-        </div>
+      <div class="hero-badges">
+        <span class="badge">npm • lightweight</span>
+        <span class="badge">privacy-first</span>
+        <span class="badge">self-hostable</span>
       </div>
-    </section>
+    </div>
+  </header>
 
+  <main>
     <section id="features" class="features">
       <h2>Why CorePulse?</h2>
       <div class="cards">
-        <div class="card">
+        <article class="card">
           <h3>🧠 Smart Insights</h3>
-          <p>Track performance, detect issues, and get real-time data about your project with one simple setup.</p>
-        </div>
-        <div class="card">
+          <p>Detect performance drops quickly with minimal overhead — useful in development and staging.</p>
+        </article>
+        <article class="card">
           <h3>⚙️ Plug & Play</h3>
-          <p>Install via <code>npm i corepulse</code> and start using it instantly. No complex setup required.</p>
-        </div>
-        <div class="card">
-          <h3>🌍 Open Source</h3>
-          <p>Completely open and community-driven. Contribute, improve, and innovate with others.</p>
-        </div>
+          <p>Drop the tiny SDK in your project or include via CDN. No build tools required for the demo.</p>
+        </article>
+        <article class="card">
+          <h3>🔒 Privacy-first</h3>
+          <p>Everything can run locally. Send data only where you want — or not at all.</p>
+        </article>
       </div>
     </section>
 
     <section id="install" class="install">
       <h2>Installation</h2>
-      <p>Get started in seconds:</p>
-      <pre><code>npm install corepulse</code></pre>
-      <p>Then import and initialize:</p>
-      <pre><code>import CorePulse from "corepulse";
+      <p>Two quick ways to use CorePulse:</p>
 
-CorePulse.init({
-  tracking: true,
-  performance: true,
-});</code></pre>
-    </section>
+      <div class="install-grid">
+        <div class="install-block">
+          <h4>npm (recommended)</h4>
+          <pre><code>npm install corepulse</code></pre>
+          <p>Then import it (example for bundlers):</p>
+          <pre><code>import CorePulse from "corepulse";
+CorePulse.init({ interval: 2000 });
+CorePulse.start();</code></pre>
+        </div>
 
-    <section id="about" class="about">
-      <h2>About</h2>
-      <p>
-        CorePulse is designed to make development smarter and smoother.
-        It’s a minimal, modular toolkit focused on giving developers real-time insights
-        and streamlined workflows for modern web projects.
-      </p>
-    </section>
-
-    <footer class="footer">
-      <p>© 2025 CorePulse. Built with ❤️ for developers.</p>
-      <div class="socials">
-        <a href="https://discord.gg/" target="_blank">Discord</a>
-        <a href="https://github.com/corepulse-dev" target="_blank">GitHub</a>
-        <a href="#">Docs</a>
+        <div class="install-block">
+          <h4>CDN / Plain JS</h4>
+          <p>Just include the script and call the global:</p>
+          <pre><code>&lt;script src="corepulse.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  CorePulse.init({ interval: 2000 });
+  CorePulse.start();
+&lt;/script&gt;</code></pre>
+        </div>
       </div>
-    </footer>
-  </body>
+
+      <p class="note">Tip: Open <a href="demo.html" target="_blank" rel="noopener">demo.html</a> to see CorePulse collecting metrics in the browser console.</p>
+    </section>
+
+    <section class="about" id="about">
+      <h2>About</h2>
+      <p>CorePulse started as a tiny developer utility to make performance visible without heavy setup. Use it for debugging, demos, or as a base for a custom dashboard.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>CorePulse</strong> — © <span id="year"></span> • Built for devs • <a href="docs/index.html">Docs</a>
+    </div>
+    <div class="socials">
+      <a href="https://github.com/corepulse-dev" target="_blank" rel="noopener">GitHub</a>
+      <a href="#">Discord</a>
+    </div>
+  </footer>
+</body>
 </html>
