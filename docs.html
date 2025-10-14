@@ -1,343 +1,57 @@
-<!-- docs.html — Upgraded documentation (responsive, sidebar, auto light/dark by system) -->
 <!doctype html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CorePulse Docs</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="../style.css" />
   <style>
-    /* Docs-specific additions (keeps the core site theme) */
-    :root{
-      --docs-bg: linear-gradient(180deg, rgba(6,7,10,0.6), rgba(8,9,12,0.8));
-      --sidebar-bg: rgba(10,11,14,0.55);
-      --sidebar-border: rgba(255,255,255,0.03);
-      --content-bg: rgba(255,255,255,0.02);
-      --muted-2: #9fb0d9;
-    }
-
-    /* Auto theme adjustments for light-mode fallback (if user prefers light, we slightly adjust colors) */
-    @media (prefers-color-scheme: light) {
-      :root{
-        --sidebar-bg: rgba(255,255,255,0.7);
-        --content-bg: rgba(255,255,255,0.92);
-        --muted: #55607a;
-        --muted-2: #55607a;
-        --card: #ffffff;
-      }
-      body{color:#0b1220}
-      .docs-wrap{box-shadow:0 8px 30px rgba(2,6,23,0.06)}
-    }
-
-    /* Layout */
-    body{background:var(--bg);min-height:100vh}
-    .docs-shell{display:grid;grid-template-columns:320px 1fr;gap:24px;max-width:1200px;margin:28px auto;padding:18px;align-items:start}
-    .docs-wrap{background:var(--content-bg);padding:22px;border-radius:12px;border:1px solid var(--sidebar-border);box-shadow:0 10px 40px rgba(3,4,8,0.5)}
-    .sidebar{position:sticky;top:18px;height:calc(100vh - 36px);overflow:auto;padding:18px;border-radius:12px;background:var(--sidebar-bg);border:1px solid var(--sidebar-border);backdrop-filter:blur(8px)}
-    .sidebar h3{margin:0 0 12px;font-size:1rem;color:#fff}
-    .nav-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-    .nav-list a{display:block;padding:8px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:700}
-    .nav-list a.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 8px 30px rgba(88,101,242,0.1)}
-    .nav-list a:hover{color:#fff}
-
-    /* Top mobile docs header */
-    .docs-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .docs-title{font-size:1.25rem;font-weight:800}
-    .docs-actions{display:flex;gap:8px;align-items:center}
-
-    /* content */
-    .docs-main{padding:6px 0}
-    .docs-main h1{margin-top:0}
-    .docs-main h2{margin-top:20px;margin-bottom:8px}
-    .muted{color:var(--muted);font-size:0.98rem}
-    pre{background:#020214;padding:12px;border-radius:8px;color:#9feecd;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
-    code{background:rgba(0,0,0,0.35);padding:.08rem .3rem;border-radius:6px;color:#dffdf0}
-    .doc-section{margin-bottom:22px}
-
-    /* copy button for code blocks */
-    .code-wrap{position:relative}
-    .copy-btn{position:absolute;right:10px;top:10px;background:rgba(255,255,255,0.04);border:0;padding:6px 8px;border-radius:8px;color:var(--muted);cursor:pointer;font-weight:700}
-    .copy-btn:hover{background:rgba(255,255,255,0.06);color:#fff}
-
-    /* responsive: collapse sidebar into top drawer */
-    @media (max-width:980px){
-      .docs-shell{grid-template-columns:1fr;margin:18px;padding:12px}
-      .sidebar{position:relative;height:auto;margin-bottom:12px}
-      .docs-wrap{padding:16px}
-    }
-
-    @media (max-width:640px){
-      .docs-header{flex-direction:column;align-items:flex-start;gap:8px}
-      .copy-btn{right:8px;top:8px;padding:6px}
-    }
+    /* small docs overrides */
+    body{padding:2rem}
+    .doc-wrap{max-width:900px;margin:0 auto;background:rgba(255,255,255,0.02);padding:2rem;border-radius:12px}
+    h1{font-size:1.6rem}
+    pre{background:#03030a;padding:12px;border-radius:8px;color:#8affd1;overflow:auto}
+    a{color:var(--accent2)}
   </style>
 </head>
 <body>
-  <div style="max-width:1200px;margin:16px auto;padding:8px 18px">
-    <a href="index.html" style="color:var(--muted);font-weight:700;text-decoration:none">← Back to CorePulse</a>
-  </div>
+  <div class="doc-wrap">
+    <a href="../index.html">← Back to CorePulse</a>
+    <h1>CorePulse — Documentation</h1>
 
-  <div class="docs-shell" role="main" aria-label="CorePulse documentation">
-    <aside class="sidebar" aria-label="Documentation navigation">
-      <h3>Docs</h3>
-      <nav>
-        <ul class="nav-list" id="docNav">
-          <li><a href="#overview" data-target="overview" class="active">Overview</a></li>
-          <li><a href="#install" data-target="install">Installation</a></li>
-          <li><a href="#usage" data-target="usage">Usage</a></li>
-          <li><a href="#api" data-target="api">API Reference</a></li>
-          <li><a href="#examples" data-target="examples">Examples</a></li>
-          <li><a href="#advanced" data-target="advanced">Advanced / Server</a></li>
-          <li><a href="#contrib" data-target="contrib">Contributing</a></li>
-          <li><a href="#license" data-target="license">License</a></li>
-        </ul>
-      </nav>
-      <div style="margin-top:14px">
-        <button id="toggleTheme" class="copy-btn" title="Toggle theme (system auto by default)">Theme</button>
-        <a href="demo.html" class="copy-btn" style="right:78px;top:10px">Open Demo</a>
-      </div>
-    </aside>
+    <h2>Quick Install</h2>
+    <p>Install from npm (for bundlers):</p>
+    <pre><code>npm install corepulse</code></pre>
+    <p>Or simply copy <code>corepulse.js</code> to your project and include it via a &lt;script&gt; tag.</p>
 
-    <article class="docs-wrap docs-main" id="docsWrap">
-      <header class="docs-header" aria-hidden="false">
-        <div>
-          <div class="docs-title">CorePulse Documentation</div>
-          <div class="muted">Everything you need to install, configure, and extend CorePulse.</div>
-        </div>
-        <div class="docs-actions" aria-hidden="true">
-          <!-- reserved for quick links -->
-        </div>
-      </header>
-
-      <section id="overview" class="doc-section" tabindex="-1">
-        <h1>Overview</h1>
-        <p class="muted">CorePulse is a tiny, privacy-first performance toolkit for developers. It collects simple runtime metrics (FPS, memory, resource counts) and exposes a minimal API so you can log, forward, or visualize metrics however you like.</p>
-        <p>CorePulse is intentionally small and framework-agnostic — ship it in development for diagnostics or use as a building block for custom dashboards.</p>
-      </section>
-
-      <section id="install" class="doc-section" tabindex="-1">
-        <h2>Installation</h2>
-
-        <h3>npm (for bundlers)</h3>
-        <p class="muted">Install from npm and import into your codebase.</p>
-        <div class="code-wrap">
-          <button class="copy-btn" data-copy="npm install corepulse">Copy</button>
-          <pre><code>npm install corepulse</code></pre>
-        </div>
-
-        <h3>CDN / Drop-in</h3>
-        <p class="muted">For quick testing or static sites, copy <code>corepulse.js</code> into your project and include it with a script tag.</p>
-        <div class="code-wrap">
-          <button class="copy-btn" data-copy="&lt;script src=&quot;corepulse.js&quot;&gt;&lt;/script&gt;">Copy</button>
-          <pre><code>&lt;script src="corepulse.js"&gt;&lt;/script&gt;</code></pre>
-        </div>
-      </section>
-
-      <section id="usage" class="doc-section" tabindex="-1">
-        <h2>Basic Usage</h2>
-        <p class="muted">Initialize and start collecting metrics. By default CorePulse logs to the browser console.</p>
-
-        <div class="code-wrap">
-          <button class="copy-btn" data-copy="CorePulse.init({ interval:2000 }); CorePulse.onData = (s)=>console.log(s); CorePulse.start();">Copy</button>
-          <pre><code>CorePulse.init({ interval: 2000, track: ['fps','memory','network'] });
-
-CorePulse.onData = function(stats){
-  // stats: { fps, memory, network }
-  console.log('metrics', stats);
-};
-
+    <h2>Basic Usage</h2>
+    <p>After including the SDK, initialize and start collecting metrics:</p>
+    <pre><code>CorePulse.init({ interval: 2000, track: ['fps','memory'] });
 CorePulse.start();</code></pre>
-        </div>
 
-        <h3>Stopping</h3>
-        <div class="code-wrap">
-          <button class="copy-btn" data-copy="CorePulse.stop();">Copy</button>
-          <pre><code>CorePulse.stop();</code></pre>
-        </div>
-      </section>
-
-      <section id="api" class="doc-section" tabindex="-1">
-        <h2>API Reference</h2>
-
-        <h3><code>CorePulse.init(options)</code></h3>
-        <p class="muted">Configure collection interval and tracked metrics.</p>
-        <pre><code>CorePulse.init({
-  interval: 2000,                   // ms
-  track: ['fps', 'memory', 'network'] // metrics to collect
-});</code></pre>
-
-        <h3><code>CorePulse.start()</code></h3>
-        <p>Begin periodic collection. Returns the CorePulse object.</p>
-
-        <h3><code>CorePulse.stop()</code></h3>
-        <p>Stop collection and any running RAF loop.</p>
-
-        <h3><code>CorePulse.onData = fn</code></h3>
-        <p>Assign a function to receive metric snapshots. <code>fn</code> is called with a single object: <code>{ fps, memory, network }</code>.</p>
-
-        <h3><code>CorePulse.sendTo(url)</code></h3>
-        <p>Convenience method to POST data to an endpoint. This will replace <code>onData</code> with a sender that POSTS JSON payloads: <code>{ ts: <timestamp>, data: <stats> }</code>.</p>
-      </section>
-
-      <section id="examples" class="doc-section" tabindex="-1">
-        <h2>Examples</h2>
-
-        <h3>Send to a WebSocket dashboard (concept)</h3>
-        <pre><code>// simple example (server must accept WS)
-const ws = new WebSocket('wss://your-dashboard.example/ws');
-CorePulse.onData = (s) => {
-  ws.send(JSON.stringify({ ts: Date.now(), s }));
+    <h2>Receiving Data</h2>
+    <p>By default the SDK logs to browser console. To handle metrics yourself, assign <code>CorePulse.onData</code>:</p>
+    <pre><code>CorePulse.onData = function(stats){
+  // stats contains fps, memory, network
+  console.log('received', stats);
 };</code></pre>
 
-        <h3>Persist snapshots locally</h3>
-        <pre><code>CorePulse.onData = (s) => {
-  const key = 'corepulse-snapshots';
-  const arr = JSON.parse(localStorage.getItem(key) || '[]');
-  arr.push({ ts: Date.now(), s });
-  localStorage.setItem(key, JSON.stringify(arr.slice(-500))); // keep last 500
-};</code></pre>
-      </section>
+    <h2>Send to Server</h2>
+    <p>Use <code>CorePulse.sendTo(url)</code> to POST collected data to your endpoint:</p>
+    <pre><code>CorePulse.sendTo('https://your-server.example.com/metrics');</code></pre>
 
-      <section id="advanced" class="doc-section" tabindex="-1">
-        <h2>Advanced / Server</h2>
-        <p class="muted">For production-grade dashboards, consider a small ingestion service that verifies and buffers incoming snapshots into a time-series database (InfluxDB, TimescaleDB).</p>
-        <ul>
-          <li>Expose an authenticated POST endpoint for metrics.</li>
-          <li>Use WebSockets or SSE for live dashboards to connected clients.</li>
-          <li>Aggregate and downsample before persisting long-term.</li>
-        </ul>
-      </section>
+    <h2>Advanced Ideas</h2>
+    <ul>
+      <li>Create a lightweight WebSocket server to stream live metrics to a dashboard.</li>
+      <li>Persist metric snapshots to IndexedDB or a log file for later analysis.</li>
+      <li>Wrap CorePulse into an Electron app for desktop monitoring.</li>
+    </ul>
 
-      <section id="contrib" class="doc-section" tabindex="-1">
-        <h2>Contributing</h2>
-        <p class="muted">Contributions are welcome. Please:</p>
-        <ol>
-          <li>Fork the repo</li>
-          <li>Add tests for new features</li>
-          <li>Update <code>docs.html</code> with any API changes</li>
-          <li>Open a PR and describe changes clearly</li>
-        </ol>
-      </section>
+    <h2>Contributing</h2>
+    <p>If you'd like to add features or fix bugs, fork the repo, make changes and open a pull request. Add tests under <code>tests/</code> and update docs.</p>
 
-      <section id="license" class="doc-section" tabindex="-1">
-        <h2>License</h2>
-        <p>CorePulse is released under the MIT license. Add a <code>LICENSE</code> file to your repo root with the full text.</p>
-      </section>
-    </article>
+    <h2>License</h2>
+    <p>CorePulse is MIT-licensed — see LICENSE in the repo.</p>
   </div>
-
-  <script>
-    // docs.js — small behavior: sidebar navigation, scroll spy, copy buttons, theme toggle
-    (function () {
-      // smooth scrolling for anchor links
-      document.querySelectorAll('.nav-list a, .sidebar a').forEach(a => {
-        a.addEventListener('click', (e) => {
-          const href = a.getAttribute('href');
-          if (href && href.startsWith('#')) {
-            e.preventDefault();
-            const id = href.slice(1);
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // update active
-            setActive(id);
-          }
-        });
-      });
-
-      // set active sidebar link
-      function setActive(id) {
-        document.querySelectorAll('#docNav a').forEach(link => {
-          link.classList.toggle('active', link.dataset.target === id);
-        });
-      }
-
-      // scroll spy: highlight on scroll
-      const sections = Array.from(document.querySelectorAll('.docs-wrap .doc-section'));
-      const navLinks = document.querySelectorAll('#docNav a');
-      const offset = 120;
-      function onScroll() {
-        const top = window.scrollY + offset;
-        let current = sections[0];
-        for (let section of sections) {
-          const rect = section.getBoundingClientRect();
-          const sectionTop = window.scrollY + rect.top;
-          if (top >= sectionTop) current = section;
-        }
-        if (current) {
-          const id = current.id;
-          setActive(id);
-        }
-      }
-      document.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-
-      // copy button handlers
-      document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const txt = btn.dataset.copy;
-          if (txt) {
-            try {
-              await navigator.clipboard.writeText(txt);
-              btn.textContent = 'Copied';
-              setTimeout(() => btn.textContent = 'Copy', 1200);
-            } catch (e) {
-              // fallback: find next pre and copy its text
-              const pre = btn.nextElementSibling;
-              if (pre && pre.tagName === 'PRE') {
-                try {
-                  await navigator.clipboard.writeText(pre.innerText);
-                  btn.textContent = 'Copied';
-                  setTimeout(() => btn.textContent = 'Copy', 1200);
-                } catch (err) {
-                  alert('Copy failed — please select & copy manually.');
-                }
-              }
-            }
-          }
-        });
-      });
-
-      // theme toggle — respects system by default; button toggles manual override
-      const themeBtn = document.getElementById('toggleTheme');
-      const userPref = localStorage.getItem('corepulse-theme'); // 'dark' | 'light' | null
-      function applyTheme(pref) {
-        if (pref === 'light') {
-          document.documentElement.style.setProperty('--bg', '#f6f7fb');
-          document.documentElement.style.setProperty('--muted', '#55607a');
-        } else {
-          // dark
-          document.documentElement.style.removeProperty('--bg');
-          document.documentElement.style.removeProperty('--muted');
-        }
-      }
-      // apply initial
-      if (userPref) applyTheme(userPref);
-      themeBtn.addEventListener('click', () => {
-        const cur = localStorage.getItem('corepulse-theme');
-        if (cur === 'light') {
-          localStorage.removeItem('corepulse-theme');
-          applyTheme(null);
-          themeBtn.textContent = 'Theme';
-        } else {
-          localStorage.setItem('corepulse-theme', 'light');
-          applyTheme('light');
-          themeBtn.textContent = 'Theme';
-        }
-      });
-
-      // accessible focus outlines for keyboard users
-      document.body.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') document.body.classList.add('show-focus');
-      });
-
-      // ensure sidebar active when loading anchor
-      if (location.hash) {
-        const id = location.hash.replace('#', '');
-        setActive(id);
-        const el = document.getElementById(id);
-        if (el) setTimeout(()=> el.scrollIntoView({behavior:'smooth', block:'start'}), 80);
-      }
-    })();
-  </script>
 </body>
 </html>
