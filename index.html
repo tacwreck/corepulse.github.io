@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!-- index.html -->
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -8,97 +9,143 @@
   <script defer src="script.js"></script>
 </head>
 <body>
-  <div class="background-animation"></div>
+  <div class="bg-anim" aria-hidden="true"></div>
 
-  <nav class="navbar">
-    <div class="logo">
-      <span class="logo-glow" aria-hidden="true"></span>
-      ⚡ CorePulse
-    </div>
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#install">Install</a></li>
-      <li><a href="docs/index.html">Docs</a></li>
-      <li><a href="https://github.com/corepulse-dev" target="_blank" rel="noopener">GitHub</a></li>
-    </ul>
-  </nav>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-glow" aria-hidden="true"></span>
+        ⚡ CorePulse
+      </a>
 
-  <header class="hero" id="home" role="banner">
-    <div class="hero-content">
-      <h1>Supercharge your development workflow</h1>
-      <p>CorePulse is a tiny, open-source performance toolkit that tracks FPS, CPU, memory, and network usage — then visualizes it in a dashboard or logs locally.</p>
-      <div class="hero-buttons">
-        <a class="btn primary" href="#install">Get Started</a>
-        <a class="btn secondary" href="demo.html" target="_blank" rel="noopener">Live Demo</a>
-      </div>
-      <div class="hero-badges">
-        <span class="badge">npm • lightweight</span>
-        <span class="badge">privacy-first</span>
-        <span class="badge">self-hostable</span>
-      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+      </button>
+
+      <nav class="nav-links" id="navLinks" role="navigation">
+        <a href="#features">Features</a>
+        <a href="#install">Install</a>
+        <a href="docs.html">Docs</a>
+        <a href="demo.html" target="_blank" rel="noopener">Live Demo</a>
+        <a class="cta" href="#install">Get Started</a>
+      </nav>
     </div>
   </header>
 
   <main>
-    <section id="features" class="features">
-      <h2>Why CorePulse?</h2>
-      <div class="cards">
+    <section class="hero" id="home" aria-labelledby="heroTitle">
+      <div class="hero-card">
+        <div class="hero-left">
+          <h1 id="heroTitle">See your app's heartbeat — instantly.</h1>
+          <p class="lead">
+            CorePulse is a lightweight, open-source performance toolkit for developers.
+            Track FPS, memory, network resources, and visualize metrics locally or push them to your own dashboard.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#install">Install</a>
+            <a class="btn btn-ghost" href="demo.html" target="_blank" rel="noopener">Open Demo</a>
+          </div>
+
+          <div class="badges">
+            <span class="pill">npm • tiny</span>
+            <span class="pill">privacy-first</span>
+            <span class="pill">self-hostable</span>
+          </div>
+        </div>
+
+        <div class="hero-right" aria-hidden="true">
+          <div class="panel">
+            <div class="panel-header">
+              <span class="dot on"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <strong>Local Metrics (preview)</strong>
+            </div>
+            <div class="panel-body">
+              <ul class="metrics">
+                <li><strong>FPS</strong> <span id="uiFps">—</span></li>
+                <li><strong>Memory</strong> <span id="uiMem">—</span></li>
+                <li><strong>Resources</strong> <span id="uiRes">—</span></li>
+              </ul>
+              <small class="muted">Open <code>demo.html</code> to see full logs & controls.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section container">
+      <h2 class="section-title">Why CorePulse?</h2>
+      <p class="section-sub">Made for developers who want lightweight, actionable telemetry without the noise.</p>
+
+      <div class="grid">
         <article class="card">
-          <h3>🧠 Smart Insights</h3>
-          <p>Detect performance drops quickly with minimal overhead — useful in development and staging.</p>
+          <h3>Minimal footprint</h3>
+          <p>Small bundle, no external telemetry default, easy to include during development.</p>
         </article>
+
         <article class="card">
-          <h3>⚙️ Plug & Play</h3>
-          <p>Drop the tiny SDK in your project or include via CDN. No build tools required for the demo.</p>
+          <h3>Cross-platform</h3>
+          <p>Works in modern browsers, Node (with minor wrappers), and Electron-based apps.</p>
         </article>
+
         <article class="card">
-          <h3>🔒 Privacy-first</h3>
-          <p>Everything can run locally. Send data only where you want — or not at all.</p>
+          <h3>Flexible output</h3>
+          <p>Logs to console by default. Hook <code>CorePulse.onData</code> or use <code>sendTo(url)</code>.</p>
+        </article>
+
+        <article class="card">
+          <h3>Self-host friendly</h3>
+          <p>Stream to your own WebSocket or REST endpoint and build a dashboard hosted anywhere.</p>
         </article>
       </div>
     </section>
 
-    <section id="install" class="install">
-      <h2>Installation</h2>
-      <p>Two quick ways to use CorePulse:</p>
+    <section id="install" class="section container install-section">
+      <div class="install-card">
+        <h2>Quick install</h2>
+        <p class="muted">Two simple options — pick what fits your project.</p>
 
-      <div class="install-grid">
-        <div class="install-block">
-          <h4>npm (recommended)</h4>
-          <pre><code>npm install corepulse</code></pre>
-          <p>Then import it (example for bundlers):</p>
-          <pre><code>import CorePulse from "corepulse";
+        <div class="install-grid">
+          <div class="install-box">
+            <h4>Install via npm</h4>
+            <pre class="code">npm install corepulse</pre>
+            <p>Bundle or import in modern projects:</p>
+            <pre class="code">import CorePulse from "corepulse";
+
 CorePulse.init({ interval: 2000 });
-CorePulse.start();</code></pre>
-        </div>
+CorePulse.onData = (s) =&gt; console.log("CorePulse", s);
+CorePulse.start();</pre>
+          </div>
 
-        <div class="install-block">
-          <h4>CDN / Plain JS</h4>
-          <p>Just include the script and call the global:</p>
-          <pre><code>&lt;script src="corepulse.js"&gt;&lt;/script&gt;
+          <div class="install-box">
+            <h4>CDN / Drop-in</h4>
+            <pre class="code">&lt;script src="corepulse.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   CorePulse.init({ interval: 2000 });
   CorePulse.start();
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;</pre>
+            <p class="muted">No build step required for the demo & quick tests.</p>
+          </div>
         </div>
-      </div>
 
-      <p class="note">Tip: Open <a href="demo.html" target="_blank" rel="noopener">demo.html</a> to see CorePulse collecting metrics in the browser console.</p>
+        <p class="muted small">Tip: See <a href="docs.html">Docs</a> for examples on sending data to a server and building a live dashboard.</p>
+      </div>
     </section>
 
-    <section class="about" id="about">
+    <section class="section container about">
       <h2>About</h2>
-      <p>CorePulse started as a tiny developer utility to make performance visible without heavy setup. Use it for debugging, demos, or as a base for a custom dashboard.</p>
+      <p class="muted">CorePulse aims to be a developer-first toolkit: small, extensible, and transparent. Use it to debug performance regressions, demo app health, or prototype a monitoring dashboard.</p>
     </section>
   </main>
 
   <footer class="footer">
-    <div>
-      <strong>CorePulse</strong> — © <span id="year"></span> • Built for devs • <a href="docs.html">Docs</a>
-    </div>
-    <div class="socials">
+    <div>© <span id="year"></span> CorePulse • Built for developers</div>
+    <div class="footer-links">
+      <a href="docs.html">Docs</a>
+      <a href="demo.html" target="_blank" rel="noopener">Demo</a>
       <a href="https://github.com/corepulse-dev" target="_blank" rel="noopener">GitHub</a>
-      <a href="#">Discord</a>
     </div>
   </footer>
 </body>
