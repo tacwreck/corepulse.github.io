@@ -1,59 +1,64 @@
-/* CorePulse v0.1 — tiny dev SDK for demo purposes
-   Usage (CDN): include corepulse.js then:
-     CorePulse.init({ interval:2000, track: ['fps','memory'] });
-     CorePulse.start();
-   Or import / bundle this file into your project.
+/* corepulse.js — Tiny drop-in SDK (v0.1)
+   Simple, dependency-free; logs metrics to console by default.
+   Use CorePulse.onData to receive metric objects, or CorePulse.sendTo(url).
 */
-(function (global) {
+(function (root) {
   const CorePulse = {
     _cfg: { interval: 2000, track: ["fps", "memory", "network"] },
-    _timer: null,
-    _stats: { fps: 0, memory: null, network: { rx: 0, tx: 0 } },
+    _rafId: null,
+    _timerId: null,
+    _last: performance ? performance.now() : Date.now(),
+    _frames: 0,
+    _stats: { fps: 0, memory: null, network: { resources: 0 } },
+
     init(cfg = {}) {
       this._cfg = Object.assign({}, this._cfg, cfg);
-      if (typeof window !== "undefined") {
-        // estimate fps
-        this._lastFrame = performance.now();
-        this._frames = 0;
-        this._fpsLoop = (t) => {
+      // setup fps loop
+      if (typeof requestAnimationFrame === "function") {
+        const loop = (t) => {
           this._frames++;
-          if (t - this._lastFrame >= 1000) {
+          if (t - this._last >= 1000) {
             this._stats.fps = this._frames;
             this._frames = 0;
-            this._lastFrame = t;
+            this._last = t;
           }
-          this._rafId = requestAnimationFrame(this._fpsLoop);
+          this._rafId = requestAnimationFrame(loop);
         };
+        this._rafId = requestAnimationFrame(loop);
       }
       return this;
     },
+
     start() {
-      if (typeof window !== "undefined") {
-        this._rafId = requestAnimationFrame(this._fpsLoop);
-      }
-      this._timer = setInterval(() => this._collect(), this._cfg.interval);
+      if (this._timerId) clearInterval(this._timerId);
+      this._timerId = setInterval(() => this._collect(), this._cfg.interval);
       return this;
     },
+
     stop() {
-      clearInterval(this._timer);
+      if (this._timerId) clearInterval(this._timerId);
       if (this._rafId) cancelAnimationFrame(this._rafId);
       return this;
     },
+
     _collect() {
-      // FPS already updated via RAF loop
+      // memory (best-effort)
       if (this._cfg.track.includes("memory") && performance && performance.memory) {
         try {
-          const mem = performance.memory;
+          const m = performance.memory;
           this._stats.memory = {
-            used: Math.round(mem.usedJSHeapSize / 1024 / 1024),
-            total: Math.round(mem.totalJSHeapSize / 1024 / 1024),
+            used: Math.round(m.usedJSHeapSize / 1024 / 1024),
+            total: Math.round(m.totalJSHeapSize / 1024 / 1024),
           };
         } catch (e) {
           this._stats.memory = null;
         }
+      } else {
+        this._stats.memory = null;
       }
-      if (this._cfg.track.includes("network")) {
-        // basic network sample: count ResourceTiming entries
+
+      // network resources (approx)
+      if (this._cfg.track.includes("network") && performance && performance.getEntriesByType) {
         try {
           const entries = performance.getEntriesByType("resource") || [];
           this._stats.network = { resources: entries.length };
@@ -61,32 +66,36 @@
           this._stats.network = { resources: 0 };
         }
       }
-      // emit - default: console.log (users can override onData)
+
+      // emit
       if (typeof this.onData === "function") {
-        this.onData(this._stats);
+        try { this.onData(this._stats); } catch (e) { console.error(e); }
       } else {
-        console.log("CorePulse:", JSON.stringify(this._stats));
+        // default to console log
+        try { console.log("CorePulse", this._stats); } catch (e) {}
       }
     },
+
     onData: null,
-    // small helper to bind an API endpoint or websocket
+
     sendTo(url) {
       this.onData = (data) => {
         try {
           fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ timestamp: Date.now(), data }),
-          }).catch(() => {});
+            body: JSON.stringify({ ts: Date.now(), data }),
+          }).catch(()=>{});
         } catch (e) {}
       };
       return this;
-    },
+    }
   };
 
+  // export
   if (typeof module !== "undefined" && module.exports) {
     module.exports = CorePulse;
   } else {
-    global.CorePulse = CorePulse;
+    root.CorePulse = CorePulse;
   }
 })(this);
